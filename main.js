@@ -46,6 +46,8 @@ app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); /
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 app.use('/chart', express.static(__dirname + '/node_modules/chart.js/dist'));
 
+app.use('/public', express.static(__dirname + '/public'));
+
 //예외처리
 app.use(function(req, res, next) {
   res.status(404).send('Sorry cant find that!');

@@ -34,7 +34,7 @@ router.get('/:patientId', function (request, response) {
       var list = template.list(patients, request.params.patientId, title);
       var html = page.HTML(title, id, "",
           `
-          <div class="vw-100 px-2 bg-light frame" id="message">
+          <div class="vw-100 px-2 bg-light" id="messages">
             <ul></ul>
           </div>
           <div class="vw-100 input-group input-group-lg">
