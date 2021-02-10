@@ -19,6 +19,7 @@ var indexRouter = require('./routes/index');
 var dataRouter = require('./routes/data');
 var commentRouter = require('./routes/comment');
 var chattingRouter = require('./routes/chatting');
+var registerRouter = require('./routes/register');
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,7 +33,7 @@ app.use(session({
 	store: new MySQLStore({
       host:"localhost",
       user:"root",
-      password:"3412",
+      password:"001023",
       database:"care_connect",
       port:3306
     })
@@ -43,6 +44,7 @@ app.use('/', indexRouter);
 app.use('/data', dataRouter);
 app.use('/comment', commentRouter);
 app.use('/chatting', chattingRouter);
+app.use('/register', registerRouter);
 
 //bootstrap
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
