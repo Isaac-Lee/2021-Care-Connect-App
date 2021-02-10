@@ -11,6 +11,9 @@ app.use(helmet({
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+
 //제작한 router 호출
 var indexRouter = require('./routes/index');
 var dataRouter = require('./routes/data');
@@ -58,6 +61,16 @@ app.use(function(req, res, next) {
   res.status(500).send('Something broke!')
 });*/
 
-app.listen(3000, function() {
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+  socket.on('disconnect', () => {
+  console.log('user disconnected');
+  });
+});
+
+server.listen(3000, function() {
   console.log('Example app listening on port 3000!')
 });

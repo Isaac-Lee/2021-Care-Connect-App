@@ -34,13 +34,15 @@ router.get('/:patientId', function (request, response) {
       var list = template.list(patients, request.params.patientId, title);
       var html = page.HTML(title, id, "",
           `
-          <div class="vw-100 px-2 bg-light" id="messages">
-            <ul></ul>
+          <script src=”/socket.io/socket.io.js”></script>
+          <div class="vw-100 px-2 bg-light">
+            <ul id="messages"></ul>
           </div>
           <div class="vw-100 input-group input-group-lg">
-            <input type="text" class="form-control" placeholder="메시지를 입력하세요">
+            <input type="text" class="form-control" placeholder="메시지를 입력하세요" id="msg">
             <button class="btn btn-secondary" type="button" id="send-btn">전송</button>
           </div>
+          <script src="/public/js/chatting.js"></script>
           `
           //화면에 출력할 html body
       );

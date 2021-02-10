@@ -82,8 +82,8 @@ router.get('/:patientId', function (request, response) {
                     </table>
                 </div>
             </div>
-            <script src="../js/utils.js"></script>
-            <script src="../js/chart.js"></script>
+            <script src="/public/js/utils.js"></script>
+            <script src="/public/js/chart.js"></script>
             `
             //화면에 출력할 html body
         );
