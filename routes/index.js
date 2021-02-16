@@ -39,7 +39,8 @@ router.get('/', function (req, res) {
             <button class="btn btn-primary btn-lg">회원가입</button>
             </form>
         </div>
-        `
+        `,
+        ""
         //화면에 출력할 html body
     );
     sess = req.session;

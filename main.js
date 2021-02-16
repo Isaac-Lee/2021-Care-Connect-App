@@ -1,17 +1,15 @@
 //express.js를 사용하여 back-end 구현
 var express = require('express');
-var app = express();
+var http = require('http');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var compression = require('compression');
 var helmet = require('helmet')
-app.use(helmet({
-  contestSecurityPolicy: false
-}));
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 
-var server = require('http').createServer(app);
+var app = express();
+var server = http.createServer(app);
 var io = require('socket.io')(server);
 
 //제작한 router 호출
@@ -25,6 +23,10 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
 
+app.use(helmet({
+  contestSecurityPolicy: false
+}));
+
 //DB 설정
 app.use(session({
   secret: 'asdf',
@@ -33,7 +35,7 @@ app.use(session({
 	store: new MySQLStore({
       host:"localhost",
       user:"root",
-      password:"001023",
+      password:"3412",
       database:"care_connect",
       port:3306
     })
@@ -63,10 +65,15 @@ app.use(function(req, res, next) {
   res.status(500).send('Something broke!')
 });*/
 
+
+// socket.io 관련된 부분
+app.io = require('socket.io')();
+
 io.on('connection', (socket) => {
   console.log('a user connected');
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+  socket.on('sendMessage', (msg) => {
+    msg.name = socket.name; 
+    io.emit('updateMessage', msg);
   });
   socket.on('disconnect', () => {
   console.log('user disconnected');
