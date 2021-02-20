@@ -90,16 +90,29 @@ router.post('/login_process', function(req, res){
         }    
     }) 
 
-    // res.redirect("/");
+    res.redirect("/chatting");
 });
 
 
 //회원가입
 router.post('/register_process', function(req, res){  
-    console.log(req.body);
     var id = req.body.user_id;
     var password = req.body.user_pwd;
     var name = req.body.user_name;
+    var msg = require ('dialog')
+
+    if(id == '' || password == '' || name == ''){
+        if (id == ''){
+            msg.info('ID 를 입력해주세요!');
+        }
+        else if(password == ''){
+            msg.info('PASSWORD 를 입력해주세요!');
+        }
+        else{
+            msg.info('NAME 를 입력해주세요!');
+        }
+    }
+    else{
 
         var body = req.body;
         console.log(body);
@@ -114,8 +127,9 @@ router.post('/register_process', function(req, res){
                 })
             } else {
                 if(results.length > 0) {
-                        console.log('ID가 이미 존재하는 case!');
-                        res.redirect("/register"); // 추후 중복 체크 버튼으로 대체 예정
+                        msg.info('ID가 이미 존재하는 case!');
+                        return;
+                        // 추후 중복 체크 버튼으로 대체 예정
                 }
             }    
         }) 
@@ -128,10 +142,15 @@ router.post('/register_process', function(req, res){
             }
             else{
                 //각 환자별 데이터 차트 테이블 생성 쿼리
-                // db.query('CREATE TABLE test(dd varchar(20) primary key not null)');
+                table_name ='user_'+id;
+                quer = 'CREATE TABLE '+table_name+'(num INT(11) primary key not null AUTO_INCREMENT, \
+                                            blood_sugar_after INT(10) not null, \
+                                            blood_sugar_before INT(10) not null, date DATE)';
+                db.query(quer);
                res.redirect('/'); 
             }    
         }); 
+    }
 });
 
 module.exports = router;
