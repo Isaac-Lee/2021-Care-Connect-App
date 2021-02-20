@@ -72,7 +72,8 @@ app.io = require('socket.io')();
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('sendMessage', (msg) => {
-    msg.name = socket.name; 
+    msg.name = socket.name;
+    console.log(msg);
     io.emit('updateMessage', msg);
   });
   socket.on('disconnect', () => {

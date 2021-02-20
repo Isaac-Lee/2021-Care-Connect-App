@@ -9,7 +9,7 @@ sendBtn.addEventListener('click', function() {
   var message = msgTxt.value; 
   if(!message) return false;
   socket.emit('sendMessage', { message }); // 소캣에 문자 전송을을 했다는 것을 알림
-  txtChat.value = ''; 
+  msgTxt.value = ''; 
 });
 
 socket.on('updateMessage', function(data){
@@ -20,7 +20,7 @@ socket.on('updateMessage', function(data){
     }, 1000); 
   } else {
     var chatMessageEl = drawChatMessage(data); 
-    chatWindow.appendChild(chatMessageEl); 
+    msgDiv.appendChild(chatMessageEl); 
   }
 });
 
