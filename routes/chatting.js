@@ -12,7 +12,7 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
     host:"localhost",
     user:"root",
-    password:"",
+    password:"001023",
     database:"care_connect",
     port:3306
 });
@@ -21,7 +21,7 @@ var db = mysql.createConnection({
 router.get('/', function (request, response) {
   var title = 'data';
   var id = request.session.user_id;
-  db.query(`SELECT * FROM patient`, function(error, patients) {
+  db.query(`SELECT * FROM users`, function(error, patients) {
       response.redirect(`/chatting/${patients[0].name}`);
   })
 });
@@ -29,7 +29,7 @@ router.get('/', function (request, response) {
 router.get('/:patientId', function (request, response) {
   var title = 'chatting';
   var id = request.session.user_id;
-  sql = `SELECT * FROM patient`;
+  sql = `SELECT * FROM users`;
   db.query(sql, function(error, patients) {
       var list = template.list(patients, request.params.patientId, title);
       var html = page.HTML(title, id, "",

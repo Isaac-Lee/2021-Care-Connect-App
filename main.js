@@ -35,7 +35,7 @@ app.use(session({
 	store: new MySQLStore({
       host:"localhost",
       user:"root",
-      password:"3412",
+      password:"001023",
       database:"care_connect",
       port:3306
     })
