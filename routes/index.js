@@ -11,14 +11,12 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
     host:"localhost",
     user:"root",
-    password:"", ///
+    password:"3412", ///
     database:"care_connect",
     port:3306
 });
 
 router.get('/', function (req, res) {
-    
-    
     var title = 'index';
     var html = template.HTML(title,
         `
@@ -73,7 +71,6 @@ router.post('/login_process', function(req, res){
                     req.session.logined = true;
                     req.session.user_id = id;
                     console.log('test!');
-                    
                     res.redirect("/"); //이동할 페이지 redirect
                 } else {
                     res.send({
