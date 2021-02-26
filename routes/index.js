@@ -11,7 +11,7 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
     host:"localhost",
     user:"root",
-    password:"3412", ///
+    password:"001023",
     database:"care_connect",
     port:3306
 });
@@ -132,7 +132,7 @@ router.post('/register_process', function(req, res){
         }) 
 
         // ID가 존재하지 않을 경우, 가입 가능
-        db.query('INSERT INTO users VALUES(?, ?, ?)', [id, name, password],
+        db.query('INSERT INTO users VALUES(?, ?, ?, ?)', [id, name, password, ''],
         function( error, results, fields) {
             if(error){ 
                 console.log('query is not excuted. insert fail...\n' + error);
