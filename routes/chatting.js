@@ -7,34 +7,19 @@ var sanitizeHtml = require('sanitize-html');
 var template = require('../lib/template.js');
 var page = require('../lib/page.js')
 
-//db 설정
-var mysql = require('mysql');
-var db = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"001023",
-    password:"001023",
-    database:"care_connect",
-    port:3306
-});
 
 //환자 목록 페이지
 router.get('/', function (request, response) {
   var title = 'data';
-  var id = 1;
-  // console.log(request.session.userid);
-  db.query(`SELECT * FROM users`, function(error, patients) {
-      response.redirect(`/chatting/${patients[0].first_name}`);
-  })
+  response.redirect(`/chatting/${request.session.userid}`);
 });
 
 router.get('/:patientId', function (request, response) {
   var title = 'chatting';
-  var id = 1;
-  sql = `SELECT * FROM users`;
-  db.query(sql, function(error, patients) {
-      var list = template.list(patients, request.params.patientId, title);
-      var html = page.HTML(title, id, "",
+  var id = request.session.userid;
+
+    var list = template.list(request.session.userid, title);
+    var html = page.HTML(title, id, "",
           `
           <div class="vw-100 px-2 bg-light" id="messages">
           </div>
@@ -47,8 +32,8 @@ router.get('/:patientId', function (request, response) {
           `
           //화면에 출력할 html body
       );
-      response.send(html);
-  });
+    response.send(html);
+
 });
 
 module.exports = router;
