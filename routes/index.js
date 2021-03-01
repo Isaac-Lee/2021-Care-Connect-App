@@ -12,21 +12,29 @@ router.get('/', function (req, res) {
     var html = template.HTML(title,
         `
         <div class="container text-center">
-            <form class action="/login_process" method="post">
-            <p><img class="w-50" src="./images/logo/케어커넥트 로고 기본.jpg"></p>
-            <div class="input-group input-group-lg mb-3">
-                  <span class="input-group-text">Id</span>
-                  <input type="text" class="form-control" name="user_id">
-                </div>
+        <p><img class="w-50" src="./images/logo/케어커넥트 로고 기본.jpg"></p>
+            <div class="col justify-content-center">
+                <form id="frm" class action="/login_process" method="post">
                 <div class="input-group input-group-lg mb-3">
-                  <span class="input-group-text">Password</span>
-                  <input type="password" class="form-control" name="user_pwd">
+                    <span class="input-group-text">Id</span>
+                    <input type="text" class="form-control" name="user_id">
+                    </div>
+                    <div class="input-group input-group-lg mb-3">
+                    <span class="input-group-text">Password</span>
+                    <input type="password" class="form-control" name="user_pwd">
+                    </div>
+                    <div style="float:none; margin:0 auto">
+                    <button style="width: 100%;" class="btn btn-lg btn-primary">로그인</button>
+                    </div>
+                    
+                </form>
+                <div style="float:none; margin-top: 15px;" class="row justify-content-center" >
+                    <p style="margin-right: 10px;"> 계정이 존재하지 않으신가요? </p> 
+                    <form action="/register_btn" method="post">
+                    <button class="btn btn-sm btn-outline-primary">회원가입</button>
+                    </form>
                 </div>
-                <button class="btn btn-primary btn-lg">로그인</button>
-            </form>
-            <form action="/register_btn" method="post">
-            <button class="btn btn-primary btn-lg">회원가입</button>
-            </form>
+            </div>
         </div>
         `,
         ""
@@ -51,15 +59,19 @@ router.post('/login_process', function(req, res){
 
     var isExist = false;
 
-    fs.readdir('./data', function(error, filelist){
+    fs.readdir('./data/patients', function(error, filelist){
         isExist = filelist.includes(user_id);                 
         
         if (!isExist) {
             msg.info('존재하지 않는 아이디입니다.');
             res.redirect('/');
         } else {
+<<<<<<< HEAD
+          fs.readFile(`data/patients/${user_id}`, 'utf8', function(err, user) { 
+=======
 
           fs.readFile(`data/${user_id}`, 'utf8', function(err, user) { 
+>>>>>>> e36fa62bda313ba9de1f17ff4c17a3ecfbf1b091
             user = JSON.parse(user);
             if (user.user_pw !== user_pw) {
                 msg.info('비밀번호가 틀렸습니다.');
@@ -90,21 +102,29 @@ router.post('/register_process', function(req, res){
     var pwd = post.user_pwd;
     var name = post.user_name;
     var age = post.age;
+    var type = post.diabetes_type;
+    var years = post.diabetes_years;
     var msg = require ('dialog')
 
     let isExist = false;
 
-    fs.readdir('./data', function(error, filelist){
+    fs.readdir('./data/patients', function(error, filelist){
         isExist = filelist.includes(id);
         if(!isExist){
             var user = {
                 "user_id":id,
                 "user_name":name,
                 "user_pw":pwd,
-                "age":age
+                "age":age,
+                "type":type,
+                "years":years
+            }
+            var init_data = {
+                "user_id":id
             }
             var content = JSON.stringify(user);
-            fs.writeFile(`data/${id}`, content, 'utf8', function(error){});
+            fs.writeFile(`data/patients/${id}`, content, 'utf8', function(error){});
+            fs.writeFile(`data/patients/data/${id}`, content, 'utf8', function(error){});
 
             res.redirect('/');
         }
