@@ -6,15 +6,6 @@ var sanitizeHtml = require('sanitize-html');
 
 var template = require('../lib/template.js');
 
-//db 설정
-var mysql = require('mysql');
-var db = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"001023", ///
-    database:"care_connect",
-    port:3306
-});
 
 router.get('/', function (req, res) {
     
@@ -22,6 +13,7 @@ router.get('/', function (req, res) {
     var html = template.HTML(title,
         `
         <div class="container text-center">
+        <div>
             <form class action="/register_process" method="post">
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Name</span>
@@ -39,9 +31,20 @@ router.get('/', function (req, res) {
                   <span class="input-group-text">Age</span>
                   <input type="text" class="form-control" name="user_age">
                 </div>
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">당뇨병 유형</span>
+                  <input placeholder="1 or 2"  type="text" class="form-control" name="diabetes_type">
+                </div>
+
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">당뇨병 앓은 년수</span>
+                  <input type="text" class="form-control" name="diabetes_years">
+                </div>
+
 
                 <button class="btn btn-primary btn-lg" type="submit">완료</button>
             </form> 
+        </div>
         </div>
         `,
         ""
