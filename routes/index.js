@@ -2,19 +2,10 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var fs = require('fs');
+var session = require('express-session');
 var sanitizeHtml = require('sanitize-html');
 //template 파일을 이용해서 필요한 body값을 넣어주면 공통적인 html 코드를 자동 생성
 var template = require('../lib/template.js');
-
-//db 설정
-var mysql = require('mysql');
-var db = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"001023",
-    database:"care_connect",
-    port:3306
-});
 
 router.get('/', function (req, res) {
     var title = 'index';
@@ -22,8 +13,8 @@ router.get('/', function (req, res) {
         `
         <div class="container text-center">
             <form class action="/login_process" method="post">
-                <p><img class="w-50" src="./images/logo/케어커넥트 로고 기본.jpg"></p>
-                <div class="input-group input-group-lg mb-3">
+            <p><img class="w-50" src="./images/logo/케어커넥트 로고 기본.jpg"></p>
+            <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Id</span>
                   <input type="text" class="form-control" name="user_id">
                 </div>
@@ -53,101 +44,76 @@ router.post('/register_btn', function(req, res){
 
 // 로그인
 router.post('/login_process', function(req, res){  
-    console.log(req.body);
-    var id = req.body.user_id;
-    var password = req.body.user_pwd;
-    db.query('SELECT * FROM users WHERE id = ?', [id],
-    function( error, results, fields) {
-        if (error) {
-            // console.log("error ocurred", error);
-            res.send({
-                "code": 400,
-                "failed": "error ocurred"
-            })
-        } else {
-            // console.log('The solution is: ', results);
-            if(results.length > 0) {
-                if(results[0].password == password) {
-                    req.session.logined = true;
-                    req.session.user_id = id;
-                    console.log('test!');
-                    res.redirect("/"); //이동할 페이지 redirect
-                } else {
-                    res.send({
-                        "code": 204,
-                        "success": "id and password does not match"
-                    });
-                }
-            } else {
-                res.send({
-                    "code":204,
-                    "success": "id does not exists"
-                });
-            }
-        }    
-    }) 
+    var post = req.body;
+    var user_id = post.user_id;
+    var user_pw = post.user_pwd; 
+    var msg = require ('dialog')
 
-    res.redirect("/chatting");
+    var isExist = false;
+
+    fs.readdir('./data', function(error, filelist){
+        isExist = filelist.includes(user_id);                 
+        
+        if (!isExist) {
+            msg.info('존재하지 않는 아이디입니다.');
+            res.redirect('/');
+        } else {
+
+          fs.readFile(`data/${user_id}`, 'utf8', function(err, user) { 
+            user = JSON.parse(user);
+            if (user.user_pw !== user_pw) {
+                msg.info('비밀번호가 틀렸습니다.');
+                res.redirect('/');
+            } 
+            else { 
+              req.session.is_logined = true;
+              req.session.userid = user.user_id;
+              req.session.pw = user.user_pw;
+              req.session.name = user.user_name;
+              req.session.age = user.age;
+
+              req.session.save(function(){
+                console.log(req.session.nickname + " login");
+                res.redirect(`/chatting`);
+              });
+            }
+          });
+        }
+      });
 });
 
 
 //회원가입
 router.post('/register_process', function(req, res){  
-    var id = req.body.user_id;
-    var password = req.body.user_pwd;
-    var name = req.body.user_name;
+    var post = req.body;
+    var id = post.user_id;
+    var pwd = post.user_pwd;
+    var name = post.user_name;
+    var age = post.age;
     var msg = require ('dialog')
 
-    if(id == '' || password == '' || name == ''){
-        if (id == ''){
-            msg.info('ID 를 입력해주세요!');
-        }
-        else if(password == ''){
-            msg.info('PASSWORD 를 입력해주세요!');
+    let isExist = false;
+
+    fs.readdir('./data', function(error, filelist){
+        isExist = filelist.includes(id);
+        if(!isExist){
+            var user = {
+                "user_id":id,
+                "user_name":name,
+                "user_pw":pwd,
+                "age":age
+            }
+            var content = JSON.stringify(user);
+            fs.writeFile(`data/${id}`, content, 'utf8', function(error){});
+
+            res.redirect('/');
         }
         else{
-            msg.info('NAME 를 입력해주세요!');
+            msg.info('ID가 존재합니다.');
+            res.redirect('/register')
         }
-    }
-    else{
+    });
 
-        var body = req.body;
-        console.log(body);
-
-        db.query('SELECT * FROM users WHERE id = ?', [id],
-        function( error, results, fields) {
-            if (error) {
-                console.log("error ocurred", error);
-                res.send({
-                    "code": 400,
-                    "failed": "error ocurred"
-                })
-            } else {
-                if(results.length > 0) {
-                        msg.info('ID가 이미 존재하는 case!');
-                        return;
-                        // 추후 중복 체크 버튼으로 대체 예정
-                }
-            }    
-        }) 
-
-        // ID가 존재하지 않을 경우, 가입 가능
-        db.query('INSERT INTO users VALUES(?, ?, ?, ?)', [id, name, password, ''],
-        function( error, results, fields) {
-            if(error){ 
-                console.log('query is not excuted. insert fail...\n' + error);
-            }
-            else{
-                //각 환자별 데이터 차트 테이블 생성 쿼리
-                table_name ='user_'+id;
-                quer = 'CREATE TABLE '+table_name+'(num INT(11) primary key not null AUTO_INCREMENT, \
-                                            blood_sugar_after INT(10) not null, \
-                                            blood_sugar_before INT(10) not null, date DATE)';
-                db.query(quer);
-               res.redirect('/'); 
-            }    
-        }); 
-    }
 });
 
 module.exports = router;

@@ -35,6 +35,10 @@ router.get('/', function (req, res) {
                   <span class="input-group-text">Password</span>
                   <input type="password" class="form-control" name="user_pwd">
                 </div>
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Age</span>
+                  <input type="text" class="form-control" name="user_age">
+                </div>
 
                 <button class="btn btn-primary btn-lg" type="submit">완료</button>
             </form> 

@@ -28,18 +28,10 @@ app.use(helmet({
   contestSecurityPolicy: false
 }));
 
-//DB 설정
 app.use(session({
-  secret: 'asdf',
+  secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: true,
-	store: new MySQLStore({
-      host:"localhost",
-      user:"root",
-      password:"001023",
-      database:"care_connect",
-      port:3306
-    })
+  saveUninitialized: true
 }));
 
 //필요한 주요 페이지 4개
