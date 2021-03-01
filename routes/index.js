@@ -7,10 +7,7 @@ var sanitizeHtml = require('sanitize-html');
 //template 파일을 이용해서 필요한 body값을 넣어주면 공통적인 html 코드를 자동 생성
 var template = require('../lib/template.js');
 
-
 router.get('/', function (req, res) {
-    
-    
     var title = 'index';
     var html = template.HTML(title,
         `
@@ -69,7 +66,12 @@ router.post('/login_process', function(req, res){
             msg.info('존재하지 않는 아이디입니다.');
             res.redirect('/');
         } else {
+<<<<<<< HEAD
           fs.readFile(`data/patients/${user_id}`, 'utf8', function(err, user) { 
+=======
+
+          fs.readFile(`data/${user_id}`, 'utf8', function(err, user) { 
+>>>>>>> e36fa62bda313ba9de1f17ff4c17a3ecfbf1b091
             user = JSON.parse(user);
             if (user.user_pw !== user_pw) {
                 msg.info('비밀번호가 틀렸습니다.');

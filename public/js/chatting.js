@@ -16,26 +16,42 @@ socket.on('updateMessage', function(data){
   if(data.name === 'SERVER'){ 
     var info = document.getElementById('info'); 
     info.innerHTML = data.message; setTimeout(() => { 
-      info.innerText = ''; 
-    }, 1000); 
+      info.innerText = '';
+    }, 1000);
   } else {
-    var chatMessageEl = drawChatMessage(data); 
-    msgDiv.appendChild(chatMessageEl); 
+    var chatMessageEl = drawChatMessage(data);
+    msgDiv.appendChild(chatMessageEl);
   }
 });
 
-// 메시지를 사용자의 화면에 출력해주는 부분
-function drawChatMessage(data){ 
+// 다른 사용자의 메시지를 사용자의 화면에 출력해주는 부분
+function drawChatMessage(data){
   var wrap = document.createElement('p');
-  var message = document.createElement('span'); 
-  var name = document.createElement('span'); 
-  name.innerText = data.name + " "; 
-  message.innerText = data.message; 
-  name.classList.add('output__user__name'); 
-  message.classList.add('output__user__message'); 
-  wrap.classList.add('output__user'); 
-  wrap.dataset.id = socket.id; 
+  var message = document.createElement('span');
+  var name = document.createElement('span');
+  name.innerText = data.name + " ";
+  message.innerText = data.message;
+  name.classList.add('output__user__name');
+  message.classList.add('output__user__message');
+  wrap.classList.add('output__user');
+  wrap.dataset.id = socket.id;
   wrap.appendChild(name);
   wrap.appendChild(message);
+  return wrap; 
+}
+
+// 자신의 메시지를 사용자의 화면에 출력해주는 부분
+function drawChatMessage(data){
+  var wrap = document.createElement('p');
+  var message = document.createElement('span');
+  var name = document.createElement('span');
+  name.innerText = " " + data.name;
+  message.innerText = data.message;
+  name.classList.add('output__user__name');
+  message.classList.add('output__user__message');
+  wrap.classList.add('output__user');
+  wrap.dataset.id = socket.id;
+  wrap.appendChild(message);
+  wrap.appendChild(name);
   return wrap; 
 }

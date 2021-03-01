@@ -19,18 +19,17 @@ var db = mysql.createConnection({
 });
 
 //환자 목록 페이지
-router.get('/', function (request, response) {
+router.get('/', function(request, response) {
   var title = 'data';
-  var id = 1;
-  // console.log(request.session.userid);
-  db.query(`SELECT * FROM users`, function(error, patients) {
-      response.redirect(`/chatting/${patients[0].first_name}`);
+  var id = request.session.user_id;
+  db.query(`SELECT * FROM patient`, function(error, patients) {
+      response.redirect(`/nurse/${patients[0].name}`);
   })
 });
 
 router.get('/:patientId', function (request, response) {
   var title = 'chatting';
-  var id = 1;
+  var id = request.session.user_id;
   sql = `SELECT * FROM users`;
   db.query(sql, function(error, patients) {
       var list = template.list(patients, request.params.patientId, title);

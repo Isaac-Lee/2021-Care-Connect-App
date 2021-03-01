@@ -18,6 +18,7 @@ var dataRouter = require('./routes/data');
 var commentRouter = require('./routes/comment');
 var chattingRouter = require('./routes/chatting');
 var registerRouter = require('./routes/register');
+var nurseRouter = require('./routes/nurse');
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
