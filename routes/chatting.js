@@ -10,7 +10,7 @@ var page = require('../lib/page.js')
 
 //환자 목록 페이지
 router.get('/', function (request, response) {
-  var title = 'data';
+  var title = 'chatting';
   response.redirect(`/chatting/${request.session.userid}`);
 });
 

@@ -28,11 +28,8 @@ app.use(helmet({
   contestSecurityPolicy: false
 }));
 
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-}));
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true}));
+
 
 //필요한 주요 페이지 4개
 app.use('/', indexRouter);
@@ -40,6 +37,7 @@ app.use('/data', dataRouter);
 app.use('/comment', commentRouter);
 app.use('/chatting', chattingRouter);
 app.use('/register', registerRouter);
+app.use('/nurse', nurseRouter);
 
 //bootstrap
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS

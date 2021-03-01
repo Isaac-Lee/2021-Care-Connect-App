@@ -9,8 +9,6 @@ var template = require('../lib/template.js');
 
 
 router.get('/', function (req, res) {
-    
-    
     var title = 'index';
     var html = template.HTML(title,
         `
@@ -62,9 +60,15 @@ router.post('/login_process', function(req, res){
 
     var isExist = false;
 
-    fs.readdir('./data/patients', function(error, filelist){
+    if (user_id == "nurse") {
+      req.session.userid = user_id;
+      req.session.save(function(){
+        console.log(req.session.nickname + " login");
+        res.redirect("/nurse");
+      });
+    } else {
+      fs.readdir('./data/patients', function(error, filelist){
         isExist = filelist.includes(user_id);                 
-        
         if (!isExist) {
             msg.info('존재하지 않는 아이디입니다.');
             res.redirect('/');
@@ -90,6 +94,7 @@ router.post('/login_process', function(req, res){
           });
         }
       });
+    }
 });
 
 
