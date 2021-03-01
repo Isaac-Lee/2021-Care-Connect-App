@@ -20,15 +20,16 @@ var db = mysql.createConnection({
 //환자 목록 페이지
 router.get('/', function (request, response) {
   var title = 'data';
-  var id = request.session.user_id;
+  var id = 1;
+  // console.log(request.session.userid);
   db.query(`SELECT * FROM users`, function(error, patients) {
-      response.redirect(`/chatting/${patients[0].name}`);
+      response.redirect(`/chatting/${patients[0].first_name}`);
   })
 });
 
 router.get('/:patientId', function (request, response) {
   var title = 'chatting';
-  var id = request.session.user_id;
+  var id = 1;
   sql = `SELECT * FROM users`;
   db.query(sql, function(error, patients) {
       var list = template.list(patients, request.params.patientId, title);
