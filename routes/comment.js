@@ -21,11 +21,11 @@ var db = mysql.createConnection({
 //코멘트 페이지 기본 환자 설정
 router.get('/', function(request, response) {
     var title = 'data';
-    var id = request.session.user_id;
+    var id = 1;
     var date = new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
+    var year = 2020;
+    var month = 11;
+    var day = 1;
     db.query(`SELECT * FROM patient`, function(error, patients) {
         response.redirect(`/comment/${patients[0].name}/${year}-${month}-${day}`);
     })
@@ -34,27 +34,27 @@ router.get('/', function(request, response) {
 //환자 페이지 기본 날짜 설정
 router.get('/:patientId', function (request, response) {
     var title = 'data';
-    var id = request.session.user_id;
+    var id = 1;
     var date = new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
+    var year = 2020;
+    var month = 11;
+    var day = 1;
     response.redirect(`/comment/${request.params.patientId}/${year}-${month}-${day}`);
 })
 
 //주간 환자 상태 체크 코멘트
 router.get('/:patientId/:date', function (request, response) {
     var title = 'comment';
-    var id = request.session.user_id;
+    var id = 1;
     var comment_box;
-    var year = request.params.date.split('-')[0];
-    var month = request.params.date.split('-')[1];
-    var day = request.params.date.split('-')[2];
+    var year = 2020;
+    var month = 11;
+    var day = 1;
     var comment_input =
     `
     <div class="container" style="text-align: center;">
         <form action="../comment_process" method="post">
-            <input type="hidden" class="form-control" name="name" value=${request.params.patientId}>
+            <input type="hidden" class="form-control" name="name" value=asd>
             <input type="hidden" class="form-control" name="year" value=${year}>
             <input type="hidden" class="form-control" name="month" value=${month}>
             <input type="hidden" class="form-control" name="day" value=${day}>
