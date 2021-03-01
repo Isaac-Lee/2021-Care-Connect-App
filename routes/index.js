@@ -7,7 +7,10 @@ var sanitizeHtml = require('sanitize-html');
 //template 파일을 이용해서 필요한 body값을 넣어주면 공통적인 html 코드를 자동 생성
 var template = require('../lib/template.js');
 
+
 router.get('/', function (req, res) {
+    
+    
     var title = 'index';
     var html = template.HTML(title,
         `
@@ -119,7 +122,7 @@ router.post('/register_process', function(req, res){
             }
             var content = JSON.stringify(user);
             fs.writeFile(`data/patients/${id}`, content, 'utf8', function(error){});
-            fs.writeFile(`data/patients/data/${id}`, content, 'utf8', function(error){});
+            fs.writeFile(`data/patients/records/${id}`, content, 'utf8', function(error){});
 
             res.redirect('/');
         }
