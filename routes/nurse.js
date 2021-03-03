@@ -8,13 +8,15 @@ var template = require('../lib/template.js');
 var page = require('../lib/page.js')
 
 var listRouter = require('./nurse_list');
+var chattingRouter = require('./nurse_chatting');
 router.use('/list', listRouter);
+router.use('/chatting', chattingRouter);
 
 //환자 목록 페이지
 router.get('/', function(request, response) {
   var title = 'data';
   var id = request.session.user_id;
-  response.redirect("/nurse/list")
+  response.redirect("/nurse/chatting")
 });
 
 module.exports = router;

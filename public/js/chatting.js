@@ -6,9 +6,9 @@ var socket = io();
 
 sendBtn.addEventListener('click', function() {
   console.log("send msg");
-  var message = msgTxt.value; 
+  var message = msgTxt.value;
   if(!message) return false;
-  socket.emit('sendMessage', { message }); // 소캣에 문자 전송을을 했다는 것을 알림
+  socket.emit('sendMessage', { message, name }); // 소캣에 문자 전송을을 했다는 것을 알림
   msgTxt.value = ''; 
 });
 
@@ -41,7 +41,7 @@ function drawChatMessage(data){
 }
 
 // 자신의 메시지를 사용자의 화면에 출력해주는 부분
-function drawChatMessage(data){
+function drawMyChatMessage(data){
   var wrap = document.createElement('p');
   var message = document.createElement('span');
   var name = document.createElement('span');

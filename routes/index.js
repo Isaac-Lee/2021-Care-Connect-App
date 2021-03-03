@@ -73,7 +73,7 @@ router.post('/login_process', function(req, res){
             msg.info('존재하지 않는 아이디입니다.');
             res.redirect('/');
         } else {
-          fs.readFile(`data/patients/${user_id}`, 'utf8', function(err, user) { 
+          fs.readFile(`./data/patients/${user_id}`, 'utf8', function(err, user) { 
             user = JSON.parse(user);
             if (user.user_pw !== user_pw) {
                 msg.info('비밀번호가 틀렸습니다.');

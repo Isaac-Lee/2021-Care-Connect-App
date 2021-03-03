@@ -12,30 +12,32 @@ var page = require('../lib/page.js')
 router.get('/', function (request, response) {
     var title = 'list';
     var id = request.session.userid;
-    var list = template.patient_list(patients);
-        var html = page.HTML(title, id, list,
-            `
-            <div class="col-md-12">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">이름</th>
-                            <th scope="col">나이</th>
-                            <th scope="col">병명</th>
-                            <th scope="col">정기검사요일</th>
-                            <th scope="col">평균 공복 혈당</th>
-                            <th scope="col">평균 식후 혈당</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${list}
-                    </tbody>
-                </table>
-            </div>
-            `
-            //화면에 출력할 html body
-        );
-        response.send(html);
+    fs.readdir('./data/patients', function(error, filelist){                 
+      var list = template.patient_list(filelist);
+      console.log(list);
+      var html = page.HTML(title, id, "",
+          `
+          <div class="col-md-12">
+              <table class="table">
+                  <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">이름</th>
+                        <th scope="col">나이</th>
+                        <th scope="col">당뇨형</th>
+                        <th scope="col">기간</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      ${list}
+                  </tbody>
+              </table>
+          </div>
+          `
+          //화면에 출력할 html body
+      );
+      response.send(html);
+    });
 });
 
 module.exports = router;
