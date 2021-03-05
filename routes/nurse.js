@@ -8,6 +8,8 @@ var template = require('../lib/template.js');
 var page = require('../lib/page.js')
 
 var listRouter = require('./nurse_list');
+var dataRouter = require('./nurse_data.js');
+var commentRouter = require('./nurse_comment');
 var chattingRouter = require('./nurse_chatting');
 router.use('/list', listRouter);
 router.use('/chatting', chattingRouter);

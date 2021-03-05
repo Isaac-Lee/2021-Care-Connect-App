@@ -15,7 +15,7 @@ router.get('/', function (request, response) {
     fs.readdir('./data/patients', function(error, filelist){                 
       var list = template.patient_list(filelist);
       console.log(list);
-      var html = page.HTML(title, id, "",
+      var html = page.nurse_HTML(title, id, "",
           `
           <div class="col-md-12">
               <table class="table">
@@ -23,9 +23,6 @@ router.get('/', function (request, response) {
                       <tr>
                         <th scope="col">#</th>
                         <th scope="col">이름</th>
-                        <th scope="col">나이</th>
-                        <th scope="col">당뇨형</th>
-                        <th scope="col">기간</th>
                       </tr>
                   </thead>
                   <tbody>

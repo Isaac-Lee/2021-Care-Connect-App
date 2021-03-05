@@ -17,7 +17,7 @@ router.get('/', function (request, response) {
 router.get('/:patientId', function (request, response) {
   var title = 'chatting';
   var id = request.session.userid;
-    var html = page.HTML(title, id, "",
+    var html = page.nurse_HTML(title, id, "",
           `
           <div class="vw-100 px-2 bg-light" id="messages">
           </div>
@@ -32,6 +32,22 @@ router.get('/:patientId', function (request, response) {
       );
     response.send(html);
 
+});
+
+router.post('/comment_process', function (req, res) {  
+  //코멘트 등록
+  console.log(req.body.comment);
+  var sql = `INSERT INTO comment_${req.body.year}_${req.body.month} VALUES(?,?,?)`
+  var param = [req.body.name,req.body.day,req.body.comment];
+  db.query(sql, param, function(err, rows) {
+      if (err){
+          console.log(err);
+      }
+      else{
+          console.log(rows.insertId);
+          res.redirect(`/comment/${req.body.name}/${req.body.year}-${req.body.month}-${req.body.day}`);
+      }
+  });
 });
 
 module.exports = router;

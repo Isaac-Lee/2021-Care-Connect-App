@@ -17,7 +17,7 @@ router.get('/', function (request, response) {
 router.get('/:patientId', function (request, response) {
   var title = 'chatting';
   var id = request.session.userid;
-    var html = page.HTML(title, id, "",
+    var html = page.nurse_HTML(title, id, "",
           `
           <div class="vw-100 px-2 bg-light" id="messages">
           </div>

@@ -12,25 +12,32 @@ var page = require('../lib/page.js');
 router.get('/', function(request, response) {
     var title = 'chatting';
     var id = request.session.userid;
-    var html = page.HTML(title, id, "",
-          `
-          <div class="vw-100 px-2 bg-light" id="messages">
-          </div>
-          <div class="vw-100 input-group input-group-lg">
-          <input type="text" class="form-control" placeholder="메시지를 입력하세요" id="msg">
-          <button class="btn btn-secondary" type="button" id="send-btn">전송</button>
-          </div>
-          <script src="/socket.io/socket.io.js"></script>
-          <script src="/public/js/chatting.js"></script>
-          `
-          //화면에 출력할 html body
-      );
-    response.send(html);
+    fs.readdir('./data/patients', function(error, filelist){
+      response.redirect(`/nurse/chatting/${filelist[0]}`);
+    });
 });
 
 //환자의 건강 상태 차트 및 데이터
 router.get('/:patientId', function (request, response) {
-  
-});
+    var title = 'chatting';
+    fs.readdir('./data/patients', function(error, filelist){                 
+      var list = template.list(filelist, request.params.patientId, 'chatting');
+      var html = page.nurse_HTML(title, '간호사', list,
+        `
+        <input type='hidden' id='send_to' value=${request.params.patientId}>
+        <div class="vw-100 px-2 bg-light" id="messages">
+        </div>
+        <div class="vw-100 input-group input-group-lg">
+        <input type="text" class="form-control" placeholder="메시지를 입력하세요" id="msg">
+        <button class="btn btn-secondary" type="button" id="send-btn">전송</button>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/public/js/nurse_chatting.js"></script>
+        `
+        //화면에 출력할 html body
+      );
+      response.send(html);
+    });
+  });
 
 module.exports = router;
