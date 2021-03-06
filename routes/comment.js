@@ -8,23 +8,14 @@ var sanitizeHtml = require('sanitize-html');
 var template = require('../lib/template.js');
 var page = require('../lib/page.js')
 
-//db 설정
-var mysql = require('mysql');
-var db = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"001023",
-    database:"care_connect",
-    port:3306
-});
 
 //코멘트 페이지 기본 환자 설정
 router.get('/', function(request, response) {
     var title = 'data';
     var id = 1;
     var date = new Date();
-    var year = 2020;
-    var month = 11;
+    var year = 2021;
+    var month = 3;
     var day = 1;
     db.query(`SELECT * FROM patient`, function(error, patients) {
         response.redirect(`/comment/${patients[0].name}/${year}-${month}-${day}`);
@@ -36,8 +27,8 @@ router.get('/:patientId', function (request, response) {
     var title = 'data';
     var id = 1;
     var date = new Date();
-    var year = 2020;
-    var month = 11;
+    var year = 2021;
+    var month = 3;
     var day = 1;
     response.redirect(`/comment/${request.params.patientId}/${year}-${month}-${day}`);
 })

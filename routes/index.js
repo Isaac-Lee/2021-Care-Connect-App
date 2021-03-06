@@ -68,6 +68,7 @@ router.post('/login_process', function(req, res){
       });
     } else {
       fs.readdir('./data/patients', function(error, filelist){
+
         isExist = filelist.includes(user_id);          
         if (!isExist) {
             msg.info('존재하지 않는 아이디입니다.');
