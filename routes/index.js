@@ -68,7 +68,8 @@ router.post('/login_process', function(req, res){
       });
     } else {
       fs.readdir('./data/patients', function(error, filelist){
-        isExist = filelist.includes(user_id);                 
+
+        isExist = filelist.includes(user_id);          
         if (!isExist) {
             msg.info('존재하지 않는 아이디입니다.');
             res.redirect('/');
@@ -78,8 +79,8 @@ router.post('/login_process', function(req, res){
             if (user.user_pw !== user_pw) {
                 msg.info('비밀번호가 틀렸습니다.');
                 res.redirect('/');
-            } 
-            else { 
+            }
+            else {
               req.session.is_logined = true;
               req.session.userid = user.user_id;
               req.session.pw = user.user_pw;
@@ -123,11 +124,29 @@ router.post('/register_process', function(req, res){
                 "years":years
             }
             var init_data = {
-                "user_id":id
+                "user_name":name,
+                "before_mon":0,
+                "before_tue":0,
+                "before_wed":0,
+                "before_thu":0,
+                "before_fri":0,
+                "before_sat":0,
+                "before_sun":0,
+                "after_mon":0,
+                "after_tue":0,
+                "after_wed":0,
+                "after_thu":0,
+                "after_fri":0,
+                "after_sat":0,
+                "after_sun":0
             }
+
             var content = JSON.stringify(user);
+            var content_blood = JSON.stringify(init_data);
+
             fs.writeFile(`data/patients/${id}`, content, 'utf8', function(error){});
-            fs.writeFile(`data/patients/records/${id}`, content, 'utf8', function(error){});
+            fs.writeFile(`data/patients/records/blood_${id}`, content_blood, 'utf8', function(error){});
+            // fs.writeFile(`data/patients/records/blood_after_${id}`, content_blood, 'utf8', function(error){});
 
             res.redirect('/');
         }

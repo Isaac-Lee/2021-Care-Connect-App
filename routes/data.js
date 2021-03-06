@@ -7,43 +7,26 @@ var sanitizeHtml = require('sanitize-html');
 var template = require('../lib/template.js');
 var page = require('../lib/page.js');
 
-//db 설정
-var mysql = require('mysql');
-var db = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"001023",
-    database:"care_connect",
-    port:3306
-});
-
 //데이터 페이지 기본 환자 설정
 router.get('/', function(request, response) {
     var title = 'data';
-    var id = request.session.user_id;
-    db.query(`SELECT * FROM patient`, function(error, patients) {
-        response.redirect(`/data/${patients[0].name}`);
-    })
+    var id = request.session.userid;
+
+    response.redirect(`/data/${id}`);
 });
 
 //환자의 건강 상태 차트 및 데이터
 router.get('/:patientId', function (request, response) {
     var title = 'data';
-    var id = request.session.user_id;
-    var patient_data_after;
-    var patient_data_before;
-    var sql = `SELECT * FROM blood_sugar_before WHERE name='${request.params.patientId}'`;
-    db.query(sql, function(error, patient) {
-        patient_data_before = template.data_list(patient, "공복혈당");
-    });
-    sql = `SELECT * FROM blood_sugar_after WHERE name='${request.params.patientId}'`;
-    db.query(sql, function(error, patient) {
-        patient_data_after = template.data_list(patient, "식후혈당");
-    });
-    sql = `SELECT * FROM patient`;
-    db.query(sql, function(error, patients) {
-        var list = template.list(patients, request.params.patientId, title);
-        var html = page.HTML(title, id, list,
+    var id = request.session.userid;
+
+    var pdb;
+
+    fs.readFile(`./data/patients/records/blood_${id}`, 'utf8', function(err, user) {
+        pdb = JSON.parse(user);
+        
+    var list = template.list(id, id, title);
+    var html = page.HTML(title, id, list,
             `
             <div class="col-md-10">
                 <br>
@@ -61,24 +44,28 @@ router.get('/:patientId', function (request, response) {
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">JAN</th>
-                                <th scope="col">FEB</th>
-                                <th scope="col">MAR</th>
-                                <th scope="col">APR</th>
-                                <th scope="col">MAY</th>
-                                <th scope="col">JUN</th>
-                                <th scope="col">JUL</th>
-                                <th scope="col">AUG</th>
-                                <th scope="col">SEP</th>
-                                <th scope="col">OCT</th>
-                                <th scope="col">NOV</th>
-                                <th scope="col">DEC</th>
+                                <th scope="col">MON</th>
+                                <th scope="col">TUE</th>
+                                <th scope="col">WED</th>
+                                <th scope="col">THU</th>
+                                <th scope="col">FRI</th>
+                                <th scope="col">SAT</th>
+                                <th scope="col">SUN</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${patient_data_before}
-                            ${patient_data_after}
+                        <tr>
+                        <td> 0 </td>
+                        <td> ${pdb.before_mon} </td>
+                        <td> ${pdb.before_tue} </td>
+                        <td> ${pdb.before_wed} </td>
+                        <td> ${pdb.before_thu} </td>
+                        <td> ${pdb.before_fri} </td>
+                        <td> ${pdb.before_sat} </td>
+                        <td> ${pdb.before_sun} </td>
+                        </tr>
                         </tbody>
+
                     </table>
                 </div>
             </div>
@@ -87,7 +74,7 @@ router.get('/:patientId', function (request, response) {
             `
             //화면에 출력할 html body
         );
-        response.send(html);
+    response.send(html);
     });
 });
 
