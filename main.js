@@ -28,11 +28,8 @@ app.use(helmet({
   contestSecurityPolicy: false
 }));
 
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-}));
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true}));
+
 
 //필요한 주요 페이지 4개
 app.use('/', indexRouter);
@@ -40,6 +37,7 @@ app.use('/data', dataRouter);
 app.use('/comment', commentRouter);
 app.use('/chatting', chattingRouter);
 app.use('/register', registerRouter);
+app.use('/nurse', nurseRouter);
 
 //bootstrap
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
@@ -62,12 +60,22 @@ app.use(function(req, res, next) {
 // socket.io 관련된 부분
 app.io = require('socket.io')();
 
+var name_id_match = {};
+
 io.on('connection', (socket) => {
   console.log('a user connected');
-  socket.on('sendMessage', (msg) => {
-    msg.name = socket.name;
-    console.log(msg);
-    io.emit('updateMessage', msg);
+  socket.on('user_connect', (data)=> {
+    console.log(data.name + ' logged in. id: ' + socket.id);
+    name_id_match[data.name] = socket.id;
+    console.log(name_id_match);
+  });
+  socket.on('sendMessage', (data) => {
+    console.log(data);
+    io.to(name_id_match['간호사']).emit('updateMessage', data);
+  });
+  socket.on('nurse_sendMessage', (data) => {
+    console.log(data);
+    io.to(name_id_match[data.sendto]).emit('updateMessage', data);
   });
   socket.on('disconnect', () => {
   console.log('user disconnected');

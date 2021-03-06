@@ -5,16 +5,18 @@ var userName = document.getElementById('user_name');
 var sendTo = document.getElementById('send_to');
 
 var socket = io();
+
 window.onload = function() {
-  console.log(userName.innerHTML.trim());
-  socket.emit('user_connect', {id: socket.id, name: userName.innerHTML.trim()});
+  var name_id = {name: userName.innerHTML.trim()};
+  console.log(name_id);
+  socket.emit('user_connect', name_id);
 }
 
 sendBtn.addEventListener('click', function() {
   var msg = msgTxt.value;
   if(!msg) return false;
-  var data = {message: msg, sendto: '간호사', name: userName.innerHTML.trim(), id: socket.id};
-  socket.emit('sendMessage', data);
+  var data = {message: msg, sendto: sendTo.value, name: '간호사', id: socket.id};
+  socket.emit('nurse_sendMessage', data);
   data.name = userName.innerText.trim();
   var chatMessageEl = drawChatMessage(data);
   msgDiv.appendChild(chatMessageEl);
@@ -22,7 +24,7 @@ sendBtn.addEventListener('click', function() {
 });
 
 socket.on('updateMessage', function(data){
-  if(data.name === 'SERVER'){ 
+  if(data.name === 'SERVER'){
     var info = document.getElementById('info'); 
     info.innerHTML = data.message; setTimeout(() => { 
       info.innerText = '';
