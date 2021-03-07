@@ -12,6 +12,8 @@ var dataRouter = require('./nurse_data.js');
 var commentRouter = require('./nurse_comment');
 var chattingRouter = require('./nurse_chatting');
 router.use('/list', listRouter);
+router.use('/data', dataRouter);
+router.use('/comment', commentRouter);
 router.use('/chatting', chattingRouter);
 
 //환자 목록 페이지

@@ -11,27 +11,66 @@ var page = require('../lib/page.js')
 //환자 목록 페이지
 router.get('/', function (request, response) {
   var title = 'chatting';
-  response.redirect(`/chatting/${request.session.userid}`);
+  fs.readdir('./data/patients', function(error, filelist){
+    response.redirect(`/nurse/data/${filelist[0]}`);
+  });
 });
 
 router.get('/:patientId', function (request, response) {
-  var title = 'chatting';
-  var id = request.session.userid;
-    var html = page.nurse_HTML(title, id, "",
-          `
-          <div class="vw-100 px-2 bg-light" id="messages">
-          </div>
-          <div class="vw-100 input-group input-group-lg">
-          <input type="text" class="form-control" placeholder="메시지를 입력하세요" id="msg">
-          <button class="btn btn-secondary" type="button" id="send-btn">전송</button>
-          </div>
-          <script src="/socket.io/socket.io.js"></script>
-          <script src="/public/js/chatting.js"></script>
-          `
-          //화면에 출력할 html body
-      );
-    response.send(html);
+  var title = 'data';
+    var id = request.session.userid;
 
+    fs.readFile(`./data/patients/records/blood_${id}`, 'utf8', function(err, user) {
+    var pdb = JSON.parse(user);
+    var list = template.list(filelist, request.params.patientId, 'chatting');
+    var html = page.HTML(title, id, list,
+            `
+            <div class="col-md-10">
+                <br>
+                <div class="col-md-12">
+                    <div id="container" style="width: 100%;">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                    <script src="/chart/Chart.js"></script>
+                </div>
+                <br>
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">MON</th>
+                                <th scope="col">TUE</th>
+                                <th scope="col">WED</th>
+                                <th scope="col">THU</th>
+                                <th scope="col">FRI</th>
+                                <th scope="col">SAT</th>
+                                <th scope="col">SUN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        <td> 0 </td>
+                        <td> ${pdb.before_mon} </td>
+                        <td> ${pdb.before_tue} </td>
+                        <td> ${pdb.before_wed} </td>
+                        <td> ${pdb.before_thu} </td>
+                        <td> ${pdb.before_fri} </td>
+                        <td> ${pdb.before_sat} </td>
+                        <td> ${pdb.before_sun} </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <script src="/public/js/utils.js"></script>
+            <script src="/public/js/chart.js"></script>
+            `
+            //화면에 출력할 html body
+        );
+    response.send(html);
+    });
 });
 
 module.exports = router;

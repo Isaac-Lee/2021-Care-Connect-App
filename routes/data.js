@@ -26,7 +26,7 @@ router.get('/:patientId', function (request, response) {
         pdb = JSON.parse(user);
         
     var list = template.list(id, id, title);
-    var html = page.HTML(title, id, list,
+    var html = page.HTML(title, id, '',
             `
             <div class="col-md-10">
                 <br>
