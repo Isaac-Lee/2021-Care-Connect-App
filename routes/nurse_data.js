@@ -10,20 +10,27 @@ var page = require('../lib/page.js')
 
 //환자 목록 페이지
 router.get('/', function (request, response) {
-  var title = 'chatting';
+  var title = 'data';
   fs.readdir('./data/patients', function(error, filelist){
-    response.redirect(`/nurse/data/${filelist[0]}`);
+    var i=0;
+    while (i < filelist.length) {
+      var id = filelist[i];
+      if (id != 'records') {
+        response.redirect(`/nurse/data/${id}`);
+      }
+      i += 1;
+    }
   });
 });
 
 router.get('/:patientId', function (request, response) {
   var title = 'data';
     var id = request.session.userid;
-
-    fs.readFile(`./data/patients/records/blood_${id}`, 'utf8', function(err, user) {
+    fs.readFile(`./data/patients/records/blood_${request.params.patientId}`, 'utf8', function(err, user) {
     var pdb = JSON.parse(user);
-    var list = template.list(filelist, request.params.patientId, 'chatting');
-    var html = page.HTML(title, id, list,
+    fs.readdir('./data/patients', function(error, filelist){
+      var list = template.list(filelist, request.params.patientId, 'chatting');
+      var html = page.HTML(title, id, list,
             `
             <div class="col-md-10">
                 <br>
@@ -70,6 +77,7 @@ router.get('/:patientId', function (request, response) {
             //화면에 출력할 html body
         );
     response.send(html);
+    });
     });
 });
 
