@@ -43,7 +43,7 @@ router.get('/:patientId', function (request, response) {
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">type</th>
                                 <th scope="col">MON</th>
                                 <th scope="col">TUE</th>
                                 <th scope="col">WED</th>
@@ -55,7 +55,7 @@ router.get('/:patientId', function (request, response) {
                         </thead>
                         <tbody>
                         <tr>
-                        <td> 0 </td>
+                        <td>  식전 </td>
                         <td> ${pdb.before_mon} </td>
                         <td> ${pdb.before_tue} </td>
                         <td> ${pdb.before_wed} </td>
@@ -63,6 +63,16 @@ router.get('/:patientId', function (request, response) {
                         <td> ${pdb.before_fri} </td>
                         <td> ${pdb.before_sat} </td>
                         <td> ${pdb.before_sun} </td>
+                        </tr>
+                        <tr>
+                        <td>  식후 </td>
+                        <td> ${pdb.after_mon} </td>
+                        <td> ${pdb.after_tue} </td>
+                        <td> ${pdb.after_wed} </td>
+                        <td> ${pdb.after_thu} </td>
+                        <td> ${pdb.after_fri} </td>
+                        <td> ${pdb.after_sat} </td>
+                        <td> ${pdb.after_sun} </td>
                         </tr>
                         </tbody>
 
