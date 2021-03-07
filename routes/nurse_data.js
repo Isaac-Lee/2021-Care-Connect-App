@@ -30,7 +30,7 @@ router.get('/:patientId', function (request, response) {
     var pdb = JSON.parse(user);
     fs.readdir('./data/patients', function(error, filelist){
       var list = template.list(filelist, request.params.patientId, 'chatting');
-      var html = page.HTML(title, id, list,
+      var html = page.nurse_HTML(title, id, list,
             `
             <div class="col-md-10">
                 <br>
