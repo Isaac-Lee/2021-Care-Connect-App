@@ -30,6 +30,7 @@ router.get('/:patientId', function (request, response) {
     var pdb = JSON.parse(user);
     fs.readdir('./data/patients', function(error, filelist){
       var list = template.list(filelist, request.params.patientId, 'chatting');
+      var data_list = template.data_list(pdb);
       var html = page.nurse_HTML(title, id, list,
             `
             <div class="col-md-10">
@@ -42,7 +43,7 @@ router.get('/:patientId', function (request, response) {
                 </div>
                 <br>
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table" id="식후혈당">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -56,16 +57,7 @@ router.get('/:patientId', function (request, response) {
                             </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                        <td> 0 </td>
-                        <td> ${pdb.before_mon} </td>
-                        <td> ${pdb.before_tue} </td>
-                        <td> ${pdb.before_wed} </td>
-                        <td> ${pdb.before_thu} </td>
-                        <td> ${pdb.before_fri} </td>
-                        <td> ${pdb.before_sat} </td>
-                        <td> ${pdb.before_sun} </td>
-                        </tr>
+                          ${data_list}
                         </tbody>
 
                     </table>

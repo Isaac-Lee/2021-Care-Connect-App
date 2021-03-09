@@ -1,4 +1,4 @@
-var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var Day = ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'];
 var color = Chart.helpers.color;
 
 //차트에 필요한 데이터
@@ -60,7 +60,7 @@ window.onload = function () {
 //차트 1달 추가
 document.getElementById('addData').addEventListener('click', function () {
     if (barChartData.datasets.length > 0) {
-        var month = MONTHS[barChartData.labels.length % MONTHS.length];
+        var month = Day[barChartData.labels.length % Day.length];
         barChartData.labels.push(month);
 
         for (var index = 0; index < barChartData.datasets.length; ++index) {
