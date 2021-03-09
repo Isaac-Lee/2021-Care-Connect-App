@@ -12,6 +12,7 @@ router.get('/', function (req, res) {
     var title = 'register';
     var html = template.HTML(title,
         `
+        <div class="layer" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)">
         <div class="container text-center">
         <div>
             <form class action="/register_process" method="post">
@@ -33,7 +34,8 @@ router.get('/', function (req, res) {
                 </div>
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">당뇨병 유형</span>
-                  <input placeholder="1 or 2"  type="text" class="form-control" name="diabetes_type">
+                  <label><input class="form-control-input" type="radio" name="diabetes_type" value="1"> 1</label>
+                  <label><input class="form-control-input" type="radio" name="diabetes_type" value="2"> 2</label>
                 </div>
 
                 <div class="input-group input-group-lg mb-3">
@@ -44,6 +46,7 @@ router.get('/', function (req, res) {
 
                 <button class="btn btn-primary btn-lg" type="submit">완료</button>
             </form> 
+        </div>
         </div>
         </div>
         `,
