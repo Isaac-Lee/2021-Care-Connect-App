@@ -12,6 +12,7 @@ router.get('/', function (req, res) {
     var title = 'index';
     var html = template.HTML(title,
         `
+        <div class="layer" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)">
         <div class="container text-center">
         <p><img class="w-50" src="./images/logo/케어커넥트 로고 기본.jpg"></p>
             <div class="col justify-content-center">
@@ -36,6 +37,7 @@ router.get('/', function (req, res) {
                     </form>
                 </div>
             </div>
+        </div>
         </div>
         `,
         ""
