@@ -20,7 +20,7 @@ router.use('/chatting', chattingRouter);
 router.get('/', function(request, response) {
   var title = 'data';
   var id = request.session.user_id;
-  response.redirect("/nurse/chatting")
+  response.redirect("/nurse/list")
 });
 
 module.exports = router;
