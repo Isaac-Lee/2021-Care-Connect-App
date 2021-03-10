@@ -13,7 +13,6 @@ router.get('/', function (request, response) {
     var title = 'list';
     fs.readdir('./data/patients', function(error, filelist){                 
       var list = template.patient_list(filelist);
-      console.log(list);
       var html = page.nurse_HTML(title, '간호사', "",
           `
           <div class="col-md-12">
