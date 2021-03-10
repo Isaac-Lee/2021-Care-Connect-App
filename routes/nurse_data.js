@@ -10,28 +10,67 @@ var page = require('../lib/page.js')
 
 //환자 목록 페이지
 router.get('/', function (request, response) {
-  var title = 'chatting';
-  response.redirect(`/chatting/${request.session.userid}`);
+  var title = 'data';
+  fs.readdir('./data/patients', function(error, filelist){
+    var i=0;
+    while (i < filelist.length) {
+      var id = filelist[i];
+      if (id != 'records') {
+        response.redirect(`/nurse/data/${id}`);
+      }
+      i += 1;
+    }
+  });
 });
 
 router.get('/:patientId', function (request, response) {
-  var title = 'chatting';
-  var id = request.session.userid;
-    var html = page.nurse_HTML(title, id, "",
-          `
-          <div class="vw-100 px-2 bg-light" id="messages">
-          </div>
-          <div class="vw-100 input-group input-group-lg">
-          <input type="text" class="form-control" placeholder="메시지를 입력하세요" id="msg">
-          <button class="btn btn-secondary" type="button" id="send-btn">전송</button>
-          </div>
-          <script src="/socket.io/socket.io.js"></script>
-          <script src="/public/js/chatting.js"></script>
-          `
-          //화면에 출력할 html body
-      );
-    response.send(html);
+  var title = 'data';
+    var id = request.session.userid;
+    fs.readFile(`./data/patients/records/blood_${request.params.patientId}`, 'utf8', function(err, user) {
+    var pdb = JSON.parse(user);
+    fs.readdir('./data/patients', function(error, filelist){
+      var list = template.list(filelist, request.params.patientId, 'chatting');
+      var data_list = template.data_list(pdb);
+      var html = page.nurse_HTML(title, id, list,
+            `
+            <div class="col-md-10">
+                <br>
+                <div class="col-md-12">
+                    <div id="container" style="width: 100%;">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                    <script src="/chart/Chart.js"></script>
+                </div>
+                <br>
+                <div class="col-md-12">
+                    <table class="table" id="식후혈당">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">MON</th>
+                                <th scope="col">TUE</th>
+                                <th scope="col">WED</th>
+                                <th scope="col">THU</th>
+                                <th scope="col">FRI</th>
+                                <th scope="col">SAT</th>
+                                <th scope="col">SUN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          ${data_list}
+                        </tbody>
 
+                    </table>
+                </div>
+            </div>
+            <script src="/public/js/utils.js"></script>
+            <script src="/public/js/chart.js"></script>
+            `
+            //화면에 출력할 html body
+        );
+    response.send(html);
+    });
+    });
 });
 
 module.exports = router;

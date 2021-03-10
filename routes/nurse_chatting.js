@@ -10,11 +10,17 @@ var page = require('../lib/page.js');
 
 //데이터 페이지 기본 환자 설정
 router.get('/', function(request, response) {
-    var title = 'chatting';
-    var id = request.session.userid;
-    fs.readdir('./data/patients', function(error, filelist){
-      response.redirect(`/nurse/chatting/${filelist[0]}`);
-    });
+  var title = 'chatting';
+  fs.readdir('./data/patients', function(error, filelist){
+    var i=0;
+    while (i < filelist.length) {
+      var id = filelist[i];
+      if (id != 'records') {
+        response.redirect(`/nurse/chatting/${id}`);
+      }
+      i += 1;
+    }
+  });
 });
 
 //환자의 건강 상태 차트 및 데이터

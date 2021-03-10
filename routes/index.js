@@ -12,6 +12,7 @@ router.get('/', function (req, res) {
     var title = 'index';
     var html = template.HTML(title,
         `
+        <div class="layer" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)">
         <div class="container text-center">
         <p><img class="w-50" src="./images/logo/케어커넥트 로고 기본.jpg"></p>
             <div class="col justify-content-center">
@@ -36,6 +37,7 @@ router.get('/', function (req, res) {
                     </form>
                 </div>
             </div>
+        </div>
         </div>
         `,
         ""
@@ -155,6 +157,37 @@ router.post('/register_process', function(req, res){
             res.redirect('/register')
         }
     });
+
+});
+
+
+// edit data post
+router.post('/edit_process', function(req, res){  
+  var post = req.body;
+  var id = req.session.userid;
+  var before = post.val_before;
+  var after = post.val_after;
+  var msg = require ('dialog')
+  console.log('test', id)
+  fs.readFile(`./data/patients/records/blood_${id}`, 'utf8', function(err, user) { 
+      user = JSON.parse(user);
+
+      var dt;
+
+      dt = new Date();
+      dt = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+
+      var week = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+      var dayOfWeek = week[new Date(dt).getDay()];
+      
+      user[`before_${dayOfWeek}`] = before;
+      user[`after_${dayOfWeek}`] = after;
+
+      var content = JSON.stringify(user);
+
+      fs.writeFile(`data/patients/records/blood_${id}`, content, 'utf8', function(error){});
+      res.redirect('/data');
+  });
 
 });
 

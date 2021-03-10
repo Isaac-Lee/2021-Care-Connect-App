@@ -20,22 +20,43 @@ router.get('/:patientId', function (request, response) {
     var title = 'data';
     var id = request.session.userid;
 
+    var dt;
+
+    dt = new Date();
+    dt = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+
+    var week = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    var dayOfWeek = week[new Date(dt).getDay()];
+
     var pdb;
 
     fs.readFile(`./data/patients/records/blood_${id}`, 'utf8', function(err, user) {
         pdb = JSON.parse(user);
         
     var list = template.list(id, id, title);
-    var html = page.HTML(title, id, list,
+    var html = page.HTML(title, id, '',
             `
             <div class="col-md-10">
                 <br>
                 <div class="col-md-12">
+                <h2> Today is ${dayOfWeek} ! </h2>
                     <div id="container" style="width: 100%;">
                         <canvas id="canvas"></canvas>
                     </div>
-                    <button class="btn btn-primary" id="addData">Add Data</button>
-                    <button class="btn btn-primary" id="removeData">Remove Data</button>
+                    <div "row col-md-12 m-2">
+                    <form class="form-inline col-md-12 justify-content-center" action="/edit_process" method="post">
+
+                        <div class="input-group input-group-lg mb-3">
+                        <input type="text" placeholder="식전" class="form-control" name="val_before">
+                        </div>
+
+                        <div class="input-group input-group-lg mb-3">
+                        <input type="text" placeholder="식후" class="form-control" name="val_after">
+                        </div>
+
+                        <button class="btn btn-primary" id="addData" type="submit">Edit Data</button>
+                    </form>  
+                    </div>       
                     <script src="/chart/Chart.js"></script>
                 </div>
                 <br>
@@ -43,7 +64,7 @@ router.get('/:patientId', function (request, response) {
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">type</th>
                                 <th scope="col">MON</th>
                                 <th scope="col">TUE</th>
                                 <th scope="col">WED</th>
@@ -55,7 +76,7 @@ router.get('/:patientId', function (request, response) {
                         </thead>
                         <tbody>
                         <tr>
-                        <td> 0 </td>
+                        <td>  식전 </td>
                         <td> ${pdb.before_mon} </td>
                         <td> ${pdb.before_tue} </td>
                         <td> ${pdb.before_wed} </td>
@@ -63,6 +84,16 @@ router.get('/:patientId', function (request, response) {
                         <td> ${pdb.before_fri} </td>
                         <td> ${pdb.before_sat} </td>
                         <td> ${pdb.before_sun} </td>
+                        </tr>
+                        <tr>
+                        <td>  식후 </td>
+                        <td> ${pdb.after_mon} </td>
+                        <td> ${pdb.after_tue} </td>
+                        <td> ${pdb.after_wed} </td>
+                        <td> ${pdb.after_thu} </td>
+                        <td> ${pdb.after_fri} </td>
+                        <td> ${pdb.after_sat} </td>
+                        <td> ${pdb.after_sun} </td>
                         </tr>
                         </tbody>
 

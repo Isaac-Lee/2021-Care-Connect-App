@@ -22,7 +22,7 @@ router.get('/', function (request, response) {
                   <thead>
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">이름</th>
+                        <th scope="col">환자 아이디</th>
                       </tr>
                   </thead>
                   <tbody>
