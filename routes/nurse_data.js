@@ -28,7 +28,7 @@ router.get('/:patientId', function (request, response) {
     fs.readFile(`./data/patients/records/blood_${request.params.patientId}`, 'utf8', function(err, user) {
     var pdb = JSON.parse(user);
     fs.readdir('./data/patients', function(error, filelist){
-      var list = template.list(filelist, request.params.patientId, 'chatting');
+      var list = template.list(filelist, request.params.patientId, title);
       var data_list = template.data_list(pdb);
       var html = page.nurse_HTML(title, '간호사', list,
             `
@@ -42,17 +42,17 @@ router.get('/:patientId', function (request, response) {
                 </div>
                 <br>
                 <div class="col-md-12">
-                    <table class="table" id="식후혈당">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">MON</th>
-                                <th scope="col">TUE</th>
-                                <th scope="col">WED</th>
-                                <th scope="col">THU</th>
-                                <th scope="col">FRI</th>
-                                <th scope="col">SAT</th>
-                                <th scope="col">SUN</th>
+                                <th scope="col">종류</th>
+                                <th scope="col">원요일</th>
+                                <th scope="col">화요일</th>
+                                <th scope="col">수요일</th>
+                                <th scope="col">목요일</th>
+                                <th scope="col">금요일</th>
+                                <th scope="col">토요일</th>
+                                <th scope="col">일요일</th>
                             </tr>
                         </thead>
                         <tbody>

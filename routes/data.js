@@ -48,11 +48,11 @@ router.get('/:patientId', function (request, response) {
                     <form class="form-inline col-md-12 justify-content-center" action="/edit_process" method="post">
 
                         <div class="input-group input-group-lg mb-3">
-                        <input type="text" placeholder="공복" class="form-control" name="val_before">
+                        <input type="text" placeholder="공복혈당" class="form-control" name="val_before">
                         </div>
 
                         <div class="input-group input-group-lg mb-3">
-                        <input type="text" placeholder="식후" class="form-control" name="val_after">
+                        <input type="text" placeholder="식후혈당" class="form-control" name="val_after">
                         </div>
 
                         <button class="btn btn-primary" id="addData" type="submit">Edit Data</button>
@@ -66,14 +66,14 @@ router.get('/:patientId', function (request, response) {
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">type</th>
-                                <th scope="col">MON</th>
-                                <th scope="col">TUE</th>
-                                <th scope="col">WED</th>
-                                <th scope="col">THU</th>
-                                <th scope="col">FRI</th>
-                                <th scope="col">SAT</th>
-                                <th scope="col">SUN</th>
+                                <th scope="col">종류</th>
+                                <th scope="col">월요일</th>
+                                <th scope="col">화요일</th>
+                                <th scope="col">수요일</th>
+                                <th scope="col">목요일</th>
+                                <th scope="col">금요일</th>
+                                <th scope="col">토요일</th>
+                                <th scope="col">일요일</th>
                             </tr>
                         </thead>
                         <tbody>

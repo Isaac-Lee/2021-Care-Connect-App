@@ -1,4 +1,4 @@
-var Day = ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'];
+var Day = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
 var color = Chart.helpers.color;
 
 //차트에 필요한 데이터
@@ -13,7 +13,7 @@ for(var i = 1; i < chartdata_after.children.length; i++) {
     after_data.push(chartdata_after.children[i].childNodes[0].nodeValue);
 }
 var barChartData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
     datasets: [{
         label: '공복혈당',
         backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
