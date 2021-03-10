@@ -126,7 +126,7 @@ router.post('/register_process', function(req, res){
                 "years":years
             }
             var init_data = {
-                "user_name":name,
+                "user_name": name,
                 "before_mon":0,
                 "before_tue":0,
                 "before_wed":0,

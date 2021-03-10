@@ -15,7 +15,7 @@ router.get('/', function (request, response) {
     var i=0;
     while (i < filelist.length) {
       var id = filelist[i];
-      if (id != 'records') {
+      if (id != 'records' && id != 'comment') {
         response.redirect(`/nurse/data/${id}`);
       }
       i += 1;

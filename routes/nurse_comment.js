@@ -7,8 +7,6 @@ var sanitizeHtml = require('sanitize-html');
 var template = require('../lib/template.js');
 var page = require('../lib/page.js')
 
-
-//환자 목록 페이지
 router.get('/', function (request, response) {
   var title = 'comment';
   var date = new Date();
@@ -19,7 +17,7 @@ router.get('/', function (request, response) {
     var i=0;
     while (i < filelist.length) {
       var id = filelist[i];
-      if (id != 'records') {
+      if (id != 'records' && id != 'comment') {
         response.redirect(`/nurse/comment/${id}/${year}-${month}-${day}`);
       }
       i += 1;
@@ -35,9 +33,8 @@ router.get('/:patientId', function (request, response) {
   response.redirect(`/nurse/comment/${request.params.patientId}/${year}-${month}-${day}`);
 });
 
-router.post('/:patientId/:date', function (req, res) {  
+router.get('/:patientId/:date', function (request, response) {  
   var title = 'comment';
-  var id = request.session.user_id;
   var comment_box;
   var year = request.params.date.split('-')[0];
   var month = request.params.date.split('-')[1];
@@ -57,7 +54,6 @@ router.post('/:patientId/:date', function (req, res) {
   `;
   // TODO 코멘트 부분은 수정해야함
   var comment = "";
-
   if(comment.length == 0){    //코멘트가 없을 경우
     comment_box = `
     <div class="card">
@@ -66,28 +62,44 @@ router.post('/:patientId/:date', function (req, res) {
         </div>
     </div>
     `;
-  }else{                      //코멘트가 있을 경우
+  } else {                      //코멘트가 있을 경우
       comment_box = template.comment(comment);
   }
-  var list = template.list(patients, request.params.patientId, title);
-  var html = page.HTML(title, id, list,
-      `
-      <div class="col-md-10">
-          <br>
-          <div class="calendar"></div>
-          <script src="../js/calendar.js"></script>
-          ${comment_box}
-          ${comment_input}
-      </div>
-      `
-      //화면에 출력할 html body
-  );
-  response.send(html);
+  fs.readdir('./data/patients', function(error, patients){
+    var list = template.list(patients, request.params.patientId, title);
+    var html = page.nurse_HTML(title, '간호사', list,
+        `
+        <div class="col-md-10">
+            <br>
+            <div class="calendar"></div>
+            <script src="/public/js/calendar.js"></script>
+            ${comment_box}
+            ${comment_input}
+        </div>
+        `
+        //화면에 출력할 html body
+    );
+    response.send(html);
+  });
 });
 
-router.post('/comment_process', function (req, res) {  
+router.post('/comment_process', function (req, res) {
   //코멘트 등록
-  
+  var param = {
+    'id': req.body.patientId, 
+    'year': req.body.year, 
+    'month': req.body.month, 
+    'day': req.body.day, 
+    'comment': req.body.comment
+  };
+  var content = {
+    "comment" : param.comment
+  }
+  console.log(param.comment);
+  var comment = JSON.stringify(content);
+  fs.writeFile(`data/patients/comment/${param.id}/${param.year}/${param.month}/${param.day}/comment`, comment, 'utf8', function(error){
+    res.redirect(`/nurse/comment/${req.body.name}/${req.body.year}-${req.body.month}-${req.body.day}`);
+  });
 });
 
 module.exports = router;
