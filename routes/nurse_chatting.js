@@ -27,7 +27,7 @@ router.get('/', function(request, response) {
 router.get('/:patientId', function (request, response) {
     var title = 'chatting';
     fs.readdir('./data/patients', function(error, filelist){                 
-      var list = template.list(filelist, request.params.patientId, 'chatting');
+      var list = template.list(filelist, request.params.patientId, title);
       var html = page.nurse_HTML(title, '간호사', list,
         `
         <input type='hidden' id='send_to' value=${request.params.patientId}>

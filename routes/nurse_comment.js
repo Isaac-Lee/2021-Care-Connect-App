@@ -9,7 +9,6 @@ var page = require('../lib/page.js');
 const { err } = require('dialog');
 
 router.get('/', function (request, response) {
-  var title = 'comment';
   var date = new Date();
   var year = date.getFullYear();
   var month = date.getMonth() + 1;
@@ -20,7 +19,7 @@ router.get('/', function (request, response) {
   if (day < 10) {
     day = "0" + String(day);
   }
-  fs.readdir('./data/patients', function(error, filelist){
+  fs.readdir('data/patients', function(error, filelist){
     var i=0;
     while (i < filelist.length) {
       var id = filelist[i];
