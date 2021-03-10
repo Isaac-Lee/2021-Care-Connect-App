@@ -24,14 +24,13 @@ router.get('/', function (request, response) {
 });
 
 router.get('/:patientId', function (request, response) {
-  var title = 'data';
-    var id = request.session.userid;
+    var title = 'data';
     fs.readFile(`./data/patients/records/blood_${request.params.patientId}`, 'utf8', function(err, user) {
     var pdb = JSON.parse(user);
     fs.readdir('./data/patients', function(error, filelist){
       var list = template.list(filelist, request.params.patientId, 'chatting');
       var data_list = template.data_list(pdb);
-      var html = page.nurse_HTML(title, id, list,
+      var html = page.nurse_HTML(title, '간호사', list,
             `
             <div class="col-md-10">
                 <br>

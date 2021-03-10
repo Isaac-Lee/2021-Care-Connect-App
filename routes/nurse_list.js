@@ -11,11 +11,9 @@ var page = require('../lib/page.js')
 //환자 목록 페이지
 router.get('/', function (request, response) {
     var title = 'list';
-    var id = request.session.userid;
     fs.readdir('./data/patients', function(error, filelist){                 
       var list = template.patient_list(filelist);
-      console.log(list);
-      var html = page.nurse_HTML(title, id, "",
+      var html = page.nurse_HTML(title, '간호사', "",
           `
           <div class="col-md-12">
               <table class="table">
