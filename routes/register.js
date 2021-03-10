@@ -22,7 +22,7 @@ router.get('/', function (req, res) {
                 </div>
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Id</span>
-                  <input type="text" placeholder="영문과 숫자를 조합해서 작성해주세여" class="form-control" name="user_id">
+                  <input type="text" placeholder="영문과 숫자를 조합해서 작성해주세요." class="form-control" name="user_id">
                 </div>
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Password</span>
@@ -33,9 +33,12 @@ router.get('/', function (req, res) {
                   <input type="text" class="form-control" name="user_age">
                 </div>
                 <div class="input-group input-group-lg mb-3">
-                  <span class="input-group-text">당뇨병 유형</span>
-                  <label><input class="form-control-input" type="radio" name="diabetes_type" value="1"> 1</label>
-                  <label><input class="form-control-input" type="radio" name="diabetes_type" value="2"> 2</label>
+                  <label class="input-group-text" for="diabetes_type">당뇨형</label>
+                  <select class="form-select form-control" id="diabetes_type" name="diabetes_type">
+                    <option selected>선택해주세요...</option>
+                    <option value="1">1형</option>
+                    <option value="2">2형</option>
+                  </select>
                 </div>
 
                 <div class="input-group input-group-lg mb-3">
