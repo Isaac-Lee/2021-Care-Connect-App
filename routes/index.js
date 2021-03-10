@@ -160,4 +160,35 @@ router.post('/register_process', function(req, res){
 
 });
 
+
+// edit data post
+router.post('/edit_process', function(req, res){  
+  var post = req.body;
+  var id = req.session.userid;
+  var before = post.val_before;
+  var after = post.val_after;
+  var msg = require ('dialog')
+  console.log('test', id)
+  fs.readFile(`./data/patients/records/blood_${id}`, 'utf8', function(err, user) { 
+      user = JSON.parse(user);
+
+      var dt;
+
+      dt = new Date();
+      dt = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+
+      var week = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+      var dayOfWeek = week[new Date(dt).getDay()];
+      
+      user[`before_${dayOfWeek}`] = before;
+      user[`after_${dayOfWeek}`] = after;
+
+      var content = JSON.stringify(user);
+
+      fs.writeFile(`data/patients/records/blood_${id}`, content, 'utf8', function(error){});
+      res.redirect('/data');
+  });
+
+});
+
 module.exports = router;
