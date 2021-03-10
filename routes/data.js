@@ -56,7 +56,6 @@ router.get('/:patientId', function (request, response) {
                         <tbody>
                           ${data_list}
                         </tbody>
-
                     </table>
                 </div>
             </div>
