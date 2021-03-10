@@ -25,8 +25,8 @@ router.get('/:patientId', function (request, response) {
     fs.readFile(`./data/patients/records/blood_${id}`, 'utf8', function(err, user) {
         pdb = JSON.parse(user);
         
-    var list = template.list(id, id, title);
-    var html = page.HTML(title, id, '',
+        var data_list = template.data_list(pdb);
+        var html = page.HTML(title, id, '',
             `
             <div class="col-md-10">
                 <br>
@@ -34,8 +34,8 @@ router.get('/:patientId', function (request, response) {
                     <div id="container" style="width: 100%;">
                         <canvas id="canvas"></canvas>
                     </div>
-                    <button class="btn btn-primary" id="addData">Add Data</button>
-                    <button class="btn btn-primary" id="removeData">Remove Data</button>
+                    <button class="btn btn-primary" id="addData">추가</button>
+                    <button class="btn btn-primary" id="removeData">수정</button>
                     <script src="/chart/Chart.js"></script>
                 </div>
                 <br>
@@ -54,26 +54,7 @@ router.get('/:patientId', function (request, response) {
                             </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                        <td>  식전 </td>
-                        <td> ${pdb.before_mon} </td>
-                        <td> ${pdb.before_tue} </td>
-                        <td> ${pdb.before_wed} </td>
-                        <td> ${pdb.before_thu} </td>
-                        <td> ${pdb.before_fri} </td>
-                        <td> ${pdb.before_sat} </td>
-                        <td> ${pdb.before_sun} </td>
-                        </tr>
-                        <tr>
-                        <td>  식후 </td>
-                        <td> ${pdb.after_mon} </td>
-                        <td> ${pdb.after_tue} </td>
-                        <td> ${pdb.after_wed} </td>
-                        <td> ${pdb.after_thu} </td>
-                        <td> ${pdb.after_fri} </td>
-                        <td> ${pdb.after_sat} </td>
-                        <td> ${pdb.after_sun} </td>
-                        </tr>
+                          ${data_list}
                         </tbody>
 
                     </table>
