@@ -25,7 +25,7 @@ router.get('/:patientId', function (request, response) {
     dt = new Date();
     dt = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
 
-    var week = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    var week = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
     var dayOfWeek = week[new Date(dt).getDay()];
 
     var pdb;
@@ -39,7 +39,7 @@ router.get('/:patientId', function (request, response) {
             <div class="col-md-10">
                 <br>
                 <div class="col-md-12">
-                <h2> Today is ${dayOfWeek} ! </h2>
+                <h2> 오늘은 ${dayOfWeek} 입니다 ! </h2>
                     <div id="container" style="width: 100%;">
                         <canvas id="canvas"></canvas>
                     </div>
@@ -48,7 +48,7 @@ router.get('/:patientId', function (request, response) {
                     <form class="form-inline col-md-12 justify-content-center" action="/edit_process" method="post">
 
                         <div class="input-group input-group-lg mb-3">
-                        <input type="text" placeholder="식전" class="form-control" name="val_before">
+                        <input type="text" placeholder="공복" class="form-control" name="val_before">
                         </div>
 
                         <div class="input-group input-group-lg mb-3">
