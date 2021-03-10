@@ -17,6 +17,7 @@ router.get('/', function(request, response) {
       var id = filelist[i];
       if (id != 'records' && id != 'comment') {
         response.redirect(`/nurse/chatting/${id}`);
+        break;
       }
       i += 1;
     }
